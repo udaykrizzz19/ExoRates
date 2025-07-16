@@ -23,29 +23,28 @@ const Flag = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 10px;
-  flex-shrink: 0; // <<< ADDED: Prevents the flag from shrinking
+  flex-shrink: 0;
 `;
 
+// Styles for text truncation have been removed.
 const SelectedValue = styled.span`
   font-size: 1.1rem;
   font-weight: 600;
   color: ${({ theme }) => theme.text};
-  white-space: nowrap; // <<< ADDED: Prevents the selected value from wrapping
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const DropdownList = styled(motion.div)`
   position: absolute;
   top: 110%;
   left: 0;
-  right: 0;
+  /* By removing 'right: 0', the dropdown can now expand its width based on content. */
+  min-width: 100%; /* Ensures it's at least as wide as the header. */
   background-color: ${({ theme }) => theme.highlight};
   border: 1px solid ${({ theme }) => theme.subtle};
   border-radius: 15px;
   max-height: 200px;
-  overflow-y: auto; // <<< CHANGED: Explicitly set vertical scroll
-  overflow-x: hidden; // <<< ADDED: Explicitly hide horizontal scroll
+  overflow-y: auto;
+  overflow-x: hidden; /* This still prevents horizontal scrollbars */
   z-index: 10;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 `;
@@ -57,19 +56,13 @@ const DropdownItem = styled.div`
   align-items: center;
   gap: 10px;
   transition: background-color 0.2s ease;
+  /* Ensures the item text does not wrap */
+  white-space: nowrap;
 
   &:hover {
     background-color: ${({ theme }) => theme.body};
   }
 `;
-
-// <<< ADDED: A new styled span for the currency name to handle overflow
-const CurrencyName = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
 
 const CustomDropdown = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,8 +101,8 @@ const CustomDropdown = ({ value, onChange }) => {
             {options.map((option) => (
               <DropdownItem key={option} onClick={() => handleSelect(option)}>
                 <Flag src={`https://flagsapi.com/${countryList[option]}/flat/64.png`} />
-                {/* Use the new styled span here */}
-                <CurrencyName>{option}</CurrencyName> 
+                {/* A plain span is now sufficient. No need for a special component. */}
+                <span>{option}</span>
               </DropdownItem>
             ))}
           </DropdownList>
