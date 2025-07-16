@@ -4,25 +4,27 @@ import styled from 'styled-components';
 const KeypadGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px; /* Reduced gap */
+  gap: 10px;
 `;
 
 const Key = styled.button`
   background: transparent;
-  border: none;
   color: ${({ theme }) => theme.text};
-  font-size: 1.8rem; /* Slightly smaller font */
-  padding: 18px; /* Adjusted padding */
-  border-radius: 20px; /* More rounded */
+  font-size: 1.8rem;
+  padding: 18px;
+  border-radius: 50px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
 
+  /* <<< ADDED: A subtle border for better definition */
+  border: 0.5px solid ${({ theme }) => theme.subtle};
+
   &:hover {
-    background-color: ${({ theme }) => theme.subtle}99; /* Add hover effect */
+    background-color: ${({ theme }) => theme.subtle}99;
   }
 
   &:active {
-    transform: scale(0.95); /* Add active press effect */
+    transform: scale(0.95);
     background-color: ${({ theme }) => theme.subtle};
   }
 `;
