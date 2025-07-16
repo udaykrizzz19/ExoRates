@@ -23,12 +23,16 @@ const Flag = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 10px;
+  flex-shrink: 0; // <<< ADDED: Prevents the flag from shrinking
 `;
 
 const SelectedValue = styled.span`
   font-size: 1.1rem;
   font-weight: 600;
   color: ${({ theme }) => theme.text};
+  white-space: nowrap; // <<< ADDED: Prevents the selected value from wrapping
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const DropdownList = styled(motion.div)`
@@ -40,7 +44,8 @@ const DropdownList = styled(motion.div)`
   border: 1px solid ${({ theme }) => theme.subtle};
   border-radius: 15px;
   max-height: 200px;
-  overflow-y: auto;
+  overflow-y: auto; // <<< CHANGED: Explicitly set vertical scroll
+  overflow-x: hidden; // <<< ADDED: Explicitly hide horizontal scroll
   z-index: 10;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 `;
@@ -57,6 +62,14 @@ const DropdownItem = styled.div`
     background-color: ${({ theme }) => theme.body};
   }
 `;
+
+// <<< ADDED: A new styled span for the currency name to handle overflow
+const CurrencyName = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 
 const CustomDropdown = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +108,8 @@ const CustomDropdown = ({ value, onChange }) => {
             {options.map((option) => (
               <DropdownItem key={option} onClick={() => handleSelect(option)}>
                 <Flag src={`https://flagsapi.com/${countryList[option]}/flat/64.png`} />
-                <span>{option}</span>
+                {/* Use the new styled span here */}
+                <CurrencyName>{option}</CurrencyName> 
               </DropdownItem>
             ))}
           </DropdownList>
